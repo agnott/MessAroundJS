@@ -1,69 +1,53 @@
 import Grid from '../Grid';
 
 import { isUndefined, getScaledRems } from '../utils';
+import { isDefined, isNumber, isString } from '../validators';
 
 let COMPONENT_ID = 0;
 
 class Component {
   constructor(config = {}) {
-    this.config = config;
     this.id = COMPONENT_ID++;
 
+    this._validateConfig(config);
+
     this.div = null;
-    this.style = config.style || {};
-    this.styles = {
-      mouseEnter: {},
-      mouseLeave: {},
-      mouseDown: {},
-      mouseUp: {},
+    this.config = { ...config };
+    this.grid = new Grid({ width: this.config.width || 1, height: this.config.height || 1 });
+  }
+
+  _validateConfig(config) {
+    const validators = {
+      x: isNumber,
+      y: isNumber,
+      width: isNumber,
+      height: isNumber,
+      fill: isString,
+      strokeColor: isString,
+      strokeWidth: isNumber,
+      textColor: isString,
+      rounded: isNumber
     };
-    this.interactions = {
-      mouseEnter: false,
-      mouseLeave: false,
-      mouseDown: false,
-      mouseUp: false,
-    };
-    this.animated = (isUndefined(config.animated)) ? true : config.animated;
-    this.position = {
-      top: config.top || 0,
-      left: config.left || 0,
-    };
-    this.dimensions = {
-      width: config.width || 1,
-      height: config.height || 1,
-    };
-    this.grid = new Grid(this.dimensions);
+
+    Object.keys(config).forEach((k) => {
+      if ( !(k in validators) ) throw new Error(`Component: Nonexistent style [${k}].`);
+      if ( !validators[k](config[k]) ) throw new Error(`Component: Bad style [${k}].`);
+    });
   }
 
   _getStyle(scale) {
     const base = {
       position: 'absolute',
-      top: getScaledRems(this._getPosition('top'), scale),
-      left: getScaledRems(this._getPosition('left'), scale),
-      width: getScaledRems(this._getDimension('width'), scale),
-      height: getScaledRems(this._getDimension('height'), scale),
+      left: getScaledRems(this.config.x || 0, scale),
+      top: getScaledRems(this.config.y || 0, scale),
+      width: getScaledRems(this.config.width || 1, scale),
+      height: getScaledRems(this.config.height || 1, scale),
+      backgroundColor: this.config.fill || 'rgba(0, 0, 0, 0.05)',
+      borderRadius: getScaledRems(this.config.rounded || 0, scale),
       transition: this.animated ? 'all .5s ease-in-out' : '',
     };
 
-    return {
-      ...this.style,
-      ...(this.interactions.mouseEnter ? this.styles.mouseEnter : {}),
-      ...base,
-    }
-  }
-
-  _getPosition(pos) {
-    if (this.interactions.mouseEnter && pos in this.styles.mouseEnter) {
-      return this.styles.mouseEnter[pos];
-    }
-    return this.position[pos];
-  }
-
-  _getDimension(dim) {
-    if (this.interactions.mouseEnter && dim in this.styles.mouseEnter) {
-      return this.styles.mouseEnter[dim];
-    }
-    return this.dimensions[dim];
+    return base;
   }
 
   _attachStyles(scale) {
@@ -84,57 +68,41 @@ class Component {
   }
 
   copy() {
-    return new Component(this.config);
+    const copy = new Component(this.config);
+    this.grid.components.forEach((c) => {
+      copy.add(c.copy());
+    });
+    return copy;
   }
 
-  move(pos = {}) {
-    this.position = {
-      ...this.position,
-      ...pos,
-    };
+  move(config) {
+    if ('x' in config && isNumber(config.x)) this.config.x += config.x;
+    if ('y' in config && isNumber(config.y)) this.config.y += config.y;
     return this;
   }
 
-  resize(dims = {}) {
-    this.dimensions = {
-      ...this.dimensions,
-      ...dims,
-    };
-    this.grid.resize(this.dimensions);
-    return this;
-  }
+  alter(config) {
+    this._validateConfig(config);
 
-  stylize(style = {}) {
-    this.style = {
-      ...this.style,
-      ...style,
-    };
-    return this;
-  }
+    if ('width' in config || 'height' in config) {
+      this.grid = new Grid({
+        width: config.width || this.config.width,
+        height: config.height || this.cofig.height,
+      });
+    }
 
-  onMouseEnter(style = {}) {
-    this.styles.mouseEnter = style;
+    this.config = {
+      ...this.config,
+      ...config,
+    }
+
     return this;
-  }
-  _onMouseEnter(scale) {
-    console.log('mouse enter', this.id);
-    this.interactions.mouseEnter = true;
-    this._attachStyles(scale);
-  }
-  _onMouseLeave(scale) {
-    console.log('mouse leave', this.id);
-    this.interactions.mouseEnter = false;
-    this._attachStyles(scale);
   }
 
   render(scale) {
     this.div = document.createElement('div');
 
     this._attachStyles(scale);
-
-    // Attach event handlers
-    this.div.onmouseenter = () => this._onMouseEnter(scale);
-    this.div.onmouseleave = () => this._onMouseLeave(scale);
 
     this.div.appendChild(this.grid.render(scale));
 

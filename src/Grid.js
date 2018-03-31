@@ -2,15 +2,9 @@ import { getScaledRems } from './utils';
 
 class Grid {
   constructor(config = {}) {
-    this.config = config;
-
-    this.style = config.style || {};
-    this.dimensions = {
-      width: config.width || 10,
-      height: config.height || 10,
-    };
+    this.config = { ...config };
     this.grid = {
-      scale: config.scale || 1,
+      scale: config.scale || 0.5,
     };
 
     this.components = [];
@@ -18,19 +12,16 @@ class Grid {
 
   _getStyle(scale) {
     return {
-      ...this.style,
       position: 'relative',
-      backgroundColor: 'rgba(0, 0, 0, .05)',
-      width: getScaledRems(this.dimensions.width, scale),
-      height: getScaledRems(this.dimensions.height, scale),
+      overflow: 'hidden',
+      width: getScaledRems(this.config.width || 1, scale),
+      height: getScaledRems(this.config.height || 1, scale),
     }
   }
 
   resize(dims = {}) {
-    this.dimensions = {
-      ...this.dimensions,
-      ...dims,
-    };
+    if (dims.width) this.config.width = dims.width;
+    if (dims.height) this.config.height = dims.height;
     return this;
   }
 
