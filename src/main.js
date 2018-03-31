@@ -28,25 +28,25 @@ for(let i = 0; i < 10; i++) {
 
 const main = new Component({ x: 10, y: 3, width: 40, height: 32, fill: rgba(0, 0, 0, 0) });
 // Header text
-main.add( new Component({ x: 1, y: 1, width: 10, height: 2 }) );
+main.add( new Component({ x: 1, y: 1, width: 13, height: 2 }) );
 // subheader
-main.add( new Component({ x: 1, y: 4, width: 17, height: 1 }) );
+main.add( new Component({ x: 1, y: 4, width: 15, height: 1 }) );
 // image
 main.add( new Component({ x: 19, y: 1, width: 20, height: 13, fill: rgba(180, 20, 40, 0.3) }) );
 // shortened paragraph text
-main.add( new Component({ x: 1, y: 7, width: Math.floor(Math.random() * 5 + 13), height: 1 }) );
-main.add( new Component({ x: 1, y: 9, width: Math.floor(Math.random() * 5 + 13), height: 1 }) );
-main.add( new Component({ x: 1, y: 11, width: Math.floor(Math.random() * 5 + 13), height: 1 }) );
-main.add( new Component({ x: 1, y: 13, width: Math.floor(Math.random() * 5 + 13), height: 1 }) );
+main.add( new Component({ x: 1, y: 7, width: Math.floor(Math.random() * 2 + 16), height: 1 }) );
+main.add( new Component({ x: 1, y: 9, width: Math.floor(Math.random() * 2 + 16), height: 1 }) );
+main.add( new Component({ x: 1, y: 11, width: Math.floor(Math.random() * 2 + 16), height: 1 }) );
+main.add( new Component({ x: 1, y: 13, width: Math.floor(Math.random() * 2 + 16), height: 1 }) );
 // long paragraph text
-main.add( new Component({ x: 1, y: 15, width: Math.floor(Math.random() * 5 + 34), height: 1 }) );
-main.add( new Component({ x: 1, y: 17, width: Math.floor(Math.random() * 5 + 34), height: 1 }) );
-main.add( new Component({ x: 1, y: 19, width: Math.floor(Math.random() * 5 + 34), height: 1 }) );
-main.add( new Component({ x: 1, y: 21, width: Math.floor(Math.random() * 5 + 34), height: 1 }) );
-main.add( new Component({ x: 1, y: 23, width: Math.floor(Math.random() * 5 + 34), height: 1 }) );
-main.add( new Component({ x: 1, y: 25, width: Math.floor(Math.random() * 5 + 34), height: 1 }) );
-main.add( new Component({ x: 1, y: 27, width: Math.floor(Math.random() * 5 + 34), height: 1 }) );
-main.add( new Component({ x: 1, y: 29, width: Math.floor(Math.random() * 5 + 34), height: 1 }) );
+main.add( new Component({ x: 1, y: 15, width: Math.floor(Math.random() * 2 + 37), height: 1 }) );
+main.add( new Component({ x: 1, y: 17, width: Math.floor(Math.random() * 2 + 37), height: 1 }) );
+main.add( new Component({ x: 1, y: 19, width: Math.floor(Math.random() * 2 + 37), height: 1 }) );
+main.add( new Component({ x: 1, y: 21, width: Math.floor(Math.random() * 2 + 37), height: 1 }) );
+main.add( new Component({ x: 1, y: 23, width: Math.floor(Math.random() * 2 + 37), height: 1 }) );
+main.add( new Component({ x: 1, y: 25, width: Math.floor(Math.random() * 2 + 37), height: 1 }) );
+main.add( new Component({ x: 1, y: 27, width: Math.floor(Math.random() * 2 + 37), height: 1 }) );
+main.add( new Component({ x: 1, y: 29, width: Math.floor(Math.random() * 2 + 37), height: 1 }) );
 
 bg.add(header).add(sidebar).add(main);
 
