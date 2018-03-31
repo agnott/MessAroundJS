@@ -1,0 +1,31 @@
+{
+  "name": "messaroundjs",
+  "version": "1.0.0",
+  "description": "A library for quick UI/UX prototyping.",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agnott/MessAroundJS.git"
+  },
+  "author": "Andrew Gnott",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/agnott/MessAroundJS/issues"
+  },
+  "homepage": "https://github.com/agnott/MessAroundJS#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
+    "webpack": "^3.11.0",
+    "webpack-dev-server": "^2.11.2"
+  }
+}
